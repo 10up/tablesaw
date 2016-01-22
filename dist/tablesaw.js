@@ -984,8 +984,27 @@ if( Tablesaw.mustard ) {
 									$t.attr( "data-sortable-numeric", isNumeric ? "" : "false" );
 								}
 
-								html.push( '<option' + ( isDefaultCol && !isDescending ? ' selected' : '' ) + ' value="' + j + '_asc">' + $t.text() + ' ' + ( isNumeric ? '&#x2191;' : '(A-Z)' ) + '</option>' );
-								html.push( '<option' + ( isDefaultCol && isDescending ? ' selected' : '' ) + ' value="' + j + '_desc">' + $t.text() + ' ' + ( isNumeric ? '&#x2193;' : '(Z-A)' ) + '</option>' );
+								var $optionAsc = $( '<option>', {
+									value: j + '_asc',
+									html: $t.text() + ' ' + '&#x2191;'
+								} );
+
+								if ( isDefaultCol && !isDescending ) {
+									$optionAsc.attr( 'selected', true );
+								}
+
+								html.push( $optionAsc.prop( 'outerHTML' ) );
+
+								var $optionDesc = $( '<option>', {
+									value: j + '_desc',
+									html: $t.text() + ' ' + '&#x2193;'
+								} );
+
+								if ( isDefaultCol && isDescending ) {
+									$optionDesc.attr( 'selected', true );
+								}
+
+								html.push( $optionDesc.prop( 'outerHTML' ) );
 							});
 							html.push( '</select></span></label>' );
 
