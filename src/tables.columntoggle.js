@@ -40,25 +40,25 @@
 
 		this.$table.addClass( this.classes.columnToggleTable );
 
-		constructBtnContainer = $( document.createElement( 'div' ) ).addClass( this.classes.columnBtnContain );
+		var constructBtnContainer = $( document.createElement( 'div' ) ).addClass( this.classes.columnBtnContain );
 		$btnContain = $( constructBtnContainer );
 
-		tableId = this.$table.attr( "id" );
-		id = tableId + "-popup";
+		// tableId = this.$table.attr( "id" );
+		// id = tableId + "-popup";
 
 		tableId = this.$table.attr( "id" );
 
-		constructBtn =  $( document.createElement( 'a' ) )
+		var constructBtn =  $( document.createElement( 'a' ) )
 			.attr( 'id', tableId + '-popup' )
-			.addClass( this.classes.columnBtn )
+			.addClass( 'btn btn-micro ' + this.classes.columnBtn )
 			.data( 'data-popup-link' );
 
-		constructBtnInner = $( document.createElement( 'span' ) ).html( Tablesaw.i18n.columnBtnText );
+		var constructBtnInner = $( document.createElement( 'span' ) ).html( Tablesaw.i18n.columnBtnText );
 
-		// $menuButton = $( constructBtn ).append( $( constructBtnInner ) );
+		$menuButton = $( constructBtn ).append( $( constructBtnInner ) );
 
-		$menuButton = $( "<a href='#" + id + "' class='btn btn-micro " + this.classes.columnBtn +"' data-popup-link>" +
-										"<span>" + Tablesaw.i18n.columnBtnText + "</span></a>" );
+		// $menuButton = $( "<a href='#" + id + "' class='btn btn-micro " + this.classes.columnBtn +"' data-popup-link>" +
+		// 								"<span>" + Tablesaw.i18n.columnBtnText + "</span></a>" );
 
 
 		$popup = $( "<div class='dialog-table-coltoggle " + this.classes.popup + "' id='" + id + "'></div>" );
