@@ -378,9 +378,10 @@ if( Tablesaw.mustard ) {
 		$btnContain = $( constructBtnContainer );
 
 		tableId = this.$table.attr( "id" );
+		popupId = tableId + "-popup";
 
 		var $menuButton = $( "<a>", {
-			id: tableId + "-popup",
+			id: popupId,
 			class: "btn btn-micro " + this.classes.columnBtn
 		} );
 
@@ -388,9 +389,12 @@ if( Tablesaw.mustard ) {
 
 		$( "<span>" ).text( Tablesaw.i18n.columnBtnText ).appendTo( $menuButton );
 
+		var $popup = $( "<div>", {
+			id: popupId,
+			class: "dialog-table-coltoggle " + this.classes.popup
+		} );
 
-		$popup = $( "<div class='dialog-table-coltoggle " + this.classes.popup + "' id='" + id + "'></div>" );
-		$menu = $( "<div class='btn-group'></div>" );
+		var $menu = $( "<div>" ).addClass( 'btn-group' );
 
 		var hasNonPersistentHeaders = false;
 		$( this.headers ).not( "td" ).each( function() {
