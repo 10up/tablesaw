@@ -45,14 +45,15 @@
 
 		tableId = this.$table.attr( "id" );
 
-		var $menuButton = $( '<a>', {
-			id: tableId + '-popup',
-			class: 'btn btn-micro ' + this.classes.columnBtn,
+		var $menuButton = $( "<a>", {
+			id: tableId + "-popup",
+			class: "btn btn-micro " + this.classes.columnBtn
 		} );
 
-		$menuButton.attr( 'data-popup-link', '' );
+		$menuButton.attr( "data-popup-link", "" );
 
-		$( '<span>' ).text( Tablesaw.i18n.columnBtnText ).appendTo( $menuButton );
+		$( "<span>" ).text( Tablesaw.i18n.columnBtnText ).appendTo( $menuButton );
+
 
 		$popup = $( "<div class='dialog-table-coltoggle " + this.classes.popup + "' id='" + id + "'></div>" );
 		$menu = $( "<div class='btn-group'></div>" );
@@ -71,7 +72,7 @@
 					} ),
 					$input = $( "<input>", {
 						type: "checkbox"
-					} ).attr( "checked" ).prependTo( $label );
+					} ).attr( "checked", "" ).prependTo( $label );
 
 				$label.appendTo( $menu ).children( 0 ).data( "tablesaw-header", this );
 
