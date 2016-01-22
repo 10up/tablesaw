@@ -380,8 +380,8 @@ if( Tablesaw.mustard ) {
 		tableId = this.$table.attr( "id" );
 
 		var $menuButton = $( '<a>', {
-			class: 'btn btn-micro ' + this.classes.columnBtn,
 			id: tableId + '-popup',
+			class: 'btn btn-micro ' + this.classes.columnBtn,
 		} );
 
 		$menuButton.attr( 'data-popup-link', '' );
@@ -400,10 +400,14 @@ if( Tablesaw.mustard ) {
 			if( priority && priority !== "persist" ) {
 				$cells.addClass( self.classes.priorityPrefix + priority );
 
-				$("<label><input type='checkbox' checked>" + $this.text() + "</label>" )
-					.appendTo( $menu )
-					.children( 0 )
-					.data( "tablesaw-header", this );
+				var $label = $( "<label>", {
+						text:  $this.text()
+					} ),
+					$input = $( "<input>", {
+						type: "checkbox"
+					} ).attr( "checked" ).prependTo( $label );
+
+				$label.appendTo( $menu ).children( 0 ).data( "tablesaw-header", this );
 
 				hasNonPersistentHeaders = true;
 			}
