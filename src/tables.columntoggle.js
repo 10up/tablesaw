@@ -45,18 +45,14 @@
 
 		tableId = this.$table.attr( "id" );
 
-		var $constructBtn = $( '<a>', {
+		var $menuButton = $( '<a>', {
 			class: 'btn btn-micro ' + this.classes.columnBtn,
 			id: tableId + '-popup',
 		} );
 
-		$constructBtn.attr( 'data-popup-link', '' );
+		$menuButton.attr( 'data-popup-link', '' );
 
-		$menuButton = $('<span>').text( Tablesaw.i18n.columnBtnText ).appendTo( $constructBtn );
-
-		// $menuButton = $( "<a href='#" + id + "' class='btn btn-micro " + this.classes.columnBtn +"' data-popup-link>" +
-		// 								"<span>" + Tablesaw.i18n.columnBtnText + "</span></a>" );
-
+		$( '<span>' ).text( Tablesaw.i18n.columnBtnText ).appendTo( $menuButton );
 
 		$popup = $( "<div class='dialog-table-coltoggle " + this.classes.popup + "' id='" + id + "'></div>" );
 		$menu = $( "<div class='btn-group'></div>" );
@@ -84,8 +80,6 @@
 		}
 
 		$menu.appendTo( $popup );
-
-		console.log( $menu );
 
 		// bind change event listeners to inputs - TODO: move to a private method?
 		$menu.find( 'input[type="checkbox"]' ).on( "change", function(e) {
