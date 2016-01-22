@@ -31,7 +31,7 @@
 	ColumnToggle.prototype.init = function() {
 
 		var tableId,
-			id,
+			popupId,
 			$menuButton,
 			$popup,
 			$menu,
@@ -40,13 +40,12 @@
 
 		this.$table.addClass( this.classes.columnToggleTable );
 
-		var constructBtnContainer = $( document.createElement( 'div' ) ).addClass( this.classes.columnBtnContain );
-		$btnContain = $( constructBtnContainer );
+		$btnContain = $( document.createElement( "div" ) ).addClass( this.classes.columnBtnContain );
 
 		tableId = this.$table.attr( "id" );
 		popupId = tableId + "-popup";
 
-		var $menuButton = $( "<a>", {
+		$menuButton = $( "<a>", {
 			id: popupId,
 			class: "btn btn-micro " + this.classes.columnBtn
 		} );
@@ -55,12 +54,12 @@
 
 		$( "<span>" ).text( Tablesaw.i18n.columnBtnText ).appendTo( $menuButton );
 
-		var $popup = $( "<div>", {
+		$popup = $( "<div>", {
 			id: popupId,
 			class: "dialog-table-coltoggle " + this.classes.popup
 		} );
 
-		var $menu = $( "<div>" ).addClass( 'btn-group' );
+		$menu = $( document.createElement( "div" ) ).addClass( 'btn-group' );
 
 		var hasNonPersistentHeaders = false;
 		$( this.headers ).not( "td" ).each( function() {
@@ -72,11 +71,12 @@
 				$cells.addClass( self.classes.priorityPrefix + priority );
 
 				var $label = $( "<label>", {
-						text:  $this.text()
-					} ),
-					$input = $( "<input>", {
-						type: "checkbox"
-					} ).attr( "checked", "" ).prependTo( $label );
+					text:  $this.text()
+				} );
+
+				$( "<input>", {
+					type: "checkbox"
+				} ).attr( "checked", "" ).prependTo( $label );
 
 				$label.appendTo( $menu ).children( 0 ).data( "tablesaw-header", this );
 
