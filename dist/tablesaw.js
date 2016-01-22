@@ -651,10 +651,11 @@ if( Tablesaw.mustard ) {
 				$style.remove();
 
 				if( styles.length ) {
-					$( '<style>' + styles.join( "\n" ) + '</style>' )
-						.attr( 'id', tableId + '-persist' )
-						.data( 'hash', newHash )
-						.appendTo( $head );
+					var $styleEl = $( '<style>', {
+						html: styles.join( "\n" )
+					} );
+
+					$styleEl.attr( 'id', tableId + '-persist' ).data( 'hash', newHash ).appendTo( $head );
 				}
 			}
 		}
