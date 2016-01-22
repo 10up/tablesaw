@@ -1,6 +1,6 @@
-/*! Tablesaw - v2.0.2 - 2015-10-28
+/*! Tablesaw - v2.0.2 - 2016-01-22
 * https://github.com/filamentgroup/tablesaw
-* Copyright (c) 2015 Filament Group; Licensed  */
+* Copyright (c) 2016 Filament Group; Licensed  */
 /*
 * tablesaw: A set of plugins for responsive tables
 * Stack and Column Toggle tables
@@ -204,7 +204,7 @@ if( Tablesaw.mustard ) {
 		// get headers in reverse order so that top-level headers are appended last
 		var reverseHeaders = $( this.allHeaders );
 		var hideempty = this.hideempty;
-		
+
 		// create the hide/show toggles
 		reverseHeaders.each(function(){
 			var $t = $( this ),
@@ -224,10 +224,12 @@ if( Tablesaw.mustard ) {
 					if( iteration ){
 						filter = "td:nth-child("+ iteration +"n + " + ( colstart ) +")";
 					}
-					$cells.filter( filter ).prepend( "<b class='" + classes.cellLabels + hierarchyClass + "'>" + html + "</b>"  );
+					$cells.filter( filter ).prepend( "<b />" ).addClass( classes.cellLabels ).html( html );
 				} else {
-					$cells.wrapInner( "<span class='" + classes.cellContentLabels + "'></span>" );
-					$cells.prepend( "<b class='" + classes.cellLabels + "'>" + html + "</b>"  );
+					var $contentLabel = $( document.createElement( "span" ) ).addClass( classes.cellContentLabels );
+					var $cellLabel = $( document.createElement( "b" ) ).addClass( classes.cellLabels ).html( html );
+					$cells.wrapInner( $contentLabel );
+					$cells.prepend( $cellLabel );
 				}
 			}
 		});
@@ -372,11 +374,27 @@ if( Tablesaw.mustard ) {
 
 		this.$table.addClass( this.classes.columnToggleTable );
 
+		constructBtnContainer = $( document.createElement( 'div' ) ).addClass( this.classes.columnBtnContain );
+		$btnContain = $( constructBtnContainer );
+
 		tableId = this.$table.attr( "id" );
 		id = tableId + "-popup";
-		$btnContain = $( "<div class='" + this.classes.columnBtnContain + "'></div>" );
+
+		tableId = this.$table.attr( "id" );
+
+		constructBtn =  $( document.createElement( 'a' ) )
+			.attr( 'id', tableId + '-popup' )
+			.addClass( this.classes.columnBtn )
+			.data( 'data-popup-link' );
+
+		constructBtnInner = $( document.createElement( 'span' ) ).html( Tablesaw.i18n.columnBtnText );
+
+		// $menuButton = $( constructBtn ).append( $( constructBtnInner ) );
+
 		$menuButton = $( "<a href='#" + id + "' class='btn btn-micro " + this.classes.columnBtn +"' data-popup-link>" +
 										"<span>" + Tablesaw.i18n.columnBtnText + "</span></a>" );
+
+
 		$popup = $( "<div class='dialog-table-coltoggle " + this.classes.popup + "' id='" + id + "'></div>" );
 		$menu = $( "<div class='btn-group'></div>" );
 
@@ -891,7 +909,7 @@ if( Tablesaw.mustard ) {
 					},
 					makeHeadsActionable = function( h , fn ){
 						$.each( h , function( i , v ){
-							var b = $( "<button class='" + classes.sortButton + "'/>" );
+							var b = $( document.createElement( "button" ) ).addClass( classes.sortButton );
 							b.bind( "click" , { col: v } , fn );
 							$( v ).wrapInner( b );
 						});
