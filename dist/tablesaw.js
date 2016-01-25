@@ -1,4 +1,4 @@
-/*! Tablesaw - v2.0.2 - 2016-01-22
+/*! Tablesaw - v2.0.2 - 2016-01-25
 * https://github.com/filamentgroup/tablesaw
 * Copyright (c) 2016 Filament Group; Licensed  */
 /*
@@ -224,7 +224,7 @@ if( Tablesaw.mustard ) {
 					if( iteration ){
 						filter = "td:nth-child("+ iteration +"n + " + ( colstart ) +")";
 					}
-					$cells.filter( filter ).prepend( "<b />" ).addClass( classes.cellLabels ).html( html );
+					$cells.filter( filter ).prepend( "<b />" ).addClass( classes.cellLabels + hierarchyClass ).html( html );
 				} else {
 					var $contentLabel = $( document.createElement( "span" ) ).addClass( classes.cellContentLabels );
 					var $cellLabel = $( document.createElement( "b" ) ).addClass( classes.cellLabels ).html( html );
@@ -381,7 +381,7 @@ if( Tablesaw.mustard ) {
 
 		$menuButton = $( "<a>", {
 			id: popupId,
-			class: "btn btn-micro " + this.classes.columnBtn
+			"class": "btn btn-micro " + this.classes.columnBtn
 		} );
 
 		$menuButton.attr( "data-popup-link", "" );
@@ -390,7 +390,7 @@ if( Tablesaw.mustard ) {
 
 		$popup = $( "<div>", {
 			id: popupId,
-			class: "dialog-table-coltoggle " + this.classes.popup
+			"class": "dialog-table-coltoggle " + this.classes.popup
 		} );
 
 		$menu = $( document.createElement( "div" ) ).addClass( 'btn-group' );
@@ -410,7 +410,7 @@ if( Tablesaw.mustard ) {
 
 				$( "<input>", {
 					type: "checkbox"
-				} ).attr( "checked", "" ).prependTo( $label );
+				} ).prop( "checked", true ).prependTo( $label );
 
 				$label.appendTo( $menu ).children( 0 ).data( "tablesaw-header", this );
 

@@ -67,7 +67,7 @@
 					if( iteration ){
 						filter = "td:nth-child("+ iteration +"n + " + ( colstart ) +")";
 					}
-					$cells.filter( filter ).prepend( "<b />" ).addClass( classes.cellLabels ).html( html );
+					$cells.filter( filter ).prepend( "<b />" ).addClass( classes.cellLabels + hierarchyClass ).html( html );
 				} else {
 					var $contentLabel = $( document.createElement( "span" ) ).addClass( classes.cellContentLabels );
 					var $cellLabel = $( document.createElement( "b" ) ).addClass( classes.cellLabels ).html( html );

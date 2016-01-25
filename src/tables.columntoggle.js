@@ -47,7 +47,7 @@
 
 		$menuButton = $( "<a>", {
 			id: popupId,
-			class: "btn btn-micro " + this.classes.columnBtn
+			"class": "btn btn-micro " + this.classes.columnBtn
 		} );
 
 		$menuButton.attr( "data-popup-link", "" );
@@ -56,7 +56,7 @@
 
 		$popup = $( "<div>", {
 			id: popupId,
-			class: "dialog-table-coltoggle " + this.classes.popup
+			"class": "dialog-table-coltoggle " + this.classes.popup
 		} );
 
 		$menu = $( document.createElement( "div" ) ).addClass( 'btn-group' );
@@ -76,7 +76,7 @@
 
 				$( "<input>", {
 					type: "checkbox"
-				} ).attr( "checked", "" ).prependTo( $label );
+				} ).prop( "checked", true ).prependTo( $label );
 
 				$label.appendTo( $menu ).children( 0 ).data( "tablesaw-header", this );
 
