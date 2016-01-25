@@ -47,7 +47,7 @@
 		// get headers in reverse order so that top-level headers are appended last
 		var reverseHeaders = $( this.allHeaders );
 		var hideempty = this.hideempty;
-		
+
 		// create the hide/show toggles
 		reverseHeaders.each(function(){
 			var $t = $( this ),
@@ -67,10 +67,12 @@
 					if( iteration ){
 						filter = "td:nth-child("+ iteration +"n + " + ( colstart ) +")";
 					}
-					$cells.filter( filter ).prepend( "<b class='" + classes.cellLabels + hierarchyClass + "'>" + html + "</b>"  );
+					$cells.filter( filter ).prepend( "<b />" ).addClass( classes.cellLabels + hierarchyClass ).html( html );
 				} else {
-					$cells.wrapInner( "<span class='" + classes.cellContentLabels + "'></span>" );
-					$cells.prepend( "<b class='" + classes.cellLabels + "'>" + html + "</b>"  );
+					var $contentLabel = $( document.createElement( "span" ) ).addClass( classes.cellContentLabels );
+					var $cellLabel = $( document.createElement( "b" ) ).addClass( classes.cellLabels ).html( html );
+					$cells.wrapInner( $contentLabel );
+					$cells.prepend( $cellLabel );
 				}
 			}
 		});

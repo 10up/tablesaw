@@ -1,6 +1,6 @@
-/*! Tablesaw - v2.0.2 - 2015-10-28
+/*! Tablesaw - v2.0.2 - 2016-01-25
 * https://github.com/filamentgroup/tablesaw
-* Copyright (c) 2015 Filament Group; Licensed  */
+* Copyright (c) 2016 Filament Group; Licensed  */
 /*
 * tablesaw: A set of plugins for responsive tables
 * Stack and Column Toggle tables
@@ -204,7 +204,7 @@ if( Tablesaw.mustard ) {
 		// get headers in reverse order so that top-level headers are appended last
 		var reverseHeaders = $( this.allHeaders );
 		var hideempty = this.hideempty;
-		
+
 		// create the hide/show toggles
 		reverseHeaders.each(function(){
 			var $t = $( this ),
@@ -224,10 +224,12 @@ if( Tablesaw.mustard ) {
 					if( iteration ){
 						filter = "td:nth-child("+ iteration +"n + " + ( colstart ) +")";
 					}
-					$cells.filter( filter ).prepend( "<b class='" + classes.cellLabels + hierarchyClass + "'>" + html + "</b>"  );
+					$cells.filter( filter ).prepend( "<b />" ).addClass( classes.cellLabels + hierarchyClass ).html( html );
 				} else {
-					$cells.wrapInner( "<span class='" + classes.cellContentLabels + "'></span>" );
-					$cells.prepend( "<b class='" + classes.cellLabels + "'>" + html + "</b>"  );
+					var $contentLabel = $( document.createElement( "span" ) ).addClass( classes.cellContentLabels );
+					var $cellLabel = $( document.createElement( "b" ) ).addClass( classes.cellLabels ).html( html );
+					$cells.wrapInner( $contentLabel );
+					$cells.prepend( $cellLabel );
 				}
 			}
 		});
@@ -363,7 +365,7 @@ if( Tablesaw.mustard ) {
 	ColumnToggle.prototype.init = function() {
 
 		var tableId,
-			id,
+			popupId,
 			$menuButton,
 			$popup,
 			$menu,
@@ -372,13 +374,26 @@ if( Tablesaw.mustard ) {
 
 		this.$table.addClass( this.classes.columnToggleTable );
 
+		$btnContain = $( document.createElement( "div" ) ).addClass( this.classes.columnBtnContain );
+
 		tableId = this.$table.attr( "id" );
-		id = tableId + "-popup";
-		$btnContain = $( "<div class='" + this.classes.columnBtnContain + "'></div>" );
-		$menuButton = $( "<a href='#" + id + "' class='btn btn-micro " + this.classes.columnBtn +"' data-popup-link>" +
-										"<span>" + Tablesaw.i18n.columnBtnText + "</span></a>" );
-		$popup = $( "<div class='dialog-table-coltoggle " + this.classes.popup + "' id='" + id + "'></div>" );
-		$menu = $( "<div class='btn-group'></div>" );
+		popupId = tableId + "-popup";
+
+		$menuButton = $( "<a>", {
+			id: popupId,
+			"class": "btn btn-micro " + this.classes.columnBtn
+		} );
+
+		$menuButton.attr( "data-popup-link", "" );
+
+		$( "<span>" ).text( Tablesaw.i18n.columnBtnText ).appendTo( $menuButton );
+
+		$popup = $( "<div>", {
+			id: popupId,
+			"class": "dialog-table-coltoggle " + this.classes.popup
+		} );
+
+		$menu = $( document.createElement( "div" ) ).addClass( 'btn-group' );
 
 		var hasNonPersistentHeaders = false;
 		$( this.headers ).not( "td" ).each( function() {
@@ -389,10 +404,15 @@ if( Tablesaw.mustard ) {
 			if( priority && priority !== "persist" ) {
 				$cells.addClass( self.classes.priorityPrefix + priority );
 
-				$("<label><input type='checkbox' checked>" + $this.text() + "</label>" )
-					.appendTo( $menu )
-					.children( 0 )
-					.data( "tablesaw-header", this );
+				var $label = $( "<label>", {
+					text:  $this.text()
+				} );
+
+				$( "<input>", {
+					type: "checkbox"
+				} ).prop( "checked", true ).prependTo( $label );
+
+				$label.appendTo( $menu ).children( 0 ).data( "tablesaw-header", this );
 
 				hasNonPersistentHeaders = true;
 			}
@@ -631,10 +651,11 @@ if( Tablesaw.mustard ) {
 				$style.remove();
 
 				if( styles.length ) {
-					$( '<style>' + styles.join( "\n" ) + '</style>' )
-						.attr( 'id', tableId + '-persist' )
-						.data( 'hash', newHash )
-						.appendTo( $head );
+					var $styleEl = $( '<style>', {
+						html: styles.join( "\n" )
+					} );
+
+					$styleEl.attr( 'id', tableId + '-persist' ).data( 'hash', newHash ).appendTo( $head );
 				}
 			}
 		}
@@ -891,7 +912,7 @@ if( Tablesaw.mustard ) {
 					},
 					makeHeadsActionable = function( h , fn ){
 						$.each( h , function( i , v ){
-							var b = $( "<button class='" + classes.sortButton + "'/>" );
+							var b = $( document.createElement( "button" ) ).addClass( classes.sortButton );
 							b.bind( "click" , { col: v } , fn );
 							$( v ).wrapInner( b );
 						});
@@ -963,8 +984,27 @@ if( Tablesaw.mustard ) {
 									$t.attr( "data-sortable-numeric", isNumeric ? "" : "false" );
 								}
 
-								html.push( '<option' + ( isDefaultCol && !isDescending ? ' selected' : '' ) + ' value="' + j + '_asc">' + $t.text() + ' ' + ( isNumeric ? '&#x2191;' : '(A-Z)' ) + '</option>' );
-								html.push( '<option' + ( isDefaultCol && isDescending ? ' selected' : '' ) + ' value="' + j + '_desc">' + $t.text() + ' ' + ( isNumeric ? '&#x2193;' : '(Z-A)' ) + '</option>' );
+								var $optionAsc = $( '<option>', {
+									value: j + '_asc',
+									html: $t.text() + ' ' + '&#x2191;'
+								} );
+
+								if ( isDefaultCol && !isDescending ) {
+									$optionAsc.attr( 'selected', true );
+								}
+
+								html.push( $optionAsc.prop( 'outerHTML' ) );
+
+								var $optionDesc = $( '<option>', {
+									value: j + '_desc',
+									html: $t.text() + ' ' + '&#x2193;'
+								} );
+
+								if ( isDefaultCol && isDescending ) {
+									$optionDesc.attr( 'selected', true );
+								}
+
+								html.push( $optionDesc.prop( 'outerHTML' ) );
 							});
 							html.push( '</select></span></label>' );
 

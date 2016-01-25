@@ -31,7 +31,7 @@
 	ColumnToggle.prototype.init = function() {
 
 		var tableId,
-			id,
+			popupId,
 			$menuButton,
 			$popup,
 			$menu,
@@ -40,13 +40,26 @@
 
 		this.$table.addClass( this.classes.columnToggleTable );
 
+		$btnContain = $( document.createElement( "div" ) ).addClass( this.classes.columnBtnContain );
+
 		tableId = this.$table.attr( "id" );
-		id = tableId + "-popup";
-		$btnContain = $( "<div class='" + this.classes.columnBtnContain + "'></div>" );
-		$menuButton = $( "<a href='#" + id + "' class='btn btn-micro " + this.classes.columnBtn +"' data-popup-link>" +
-										"<span>" + Tablesaw.i18n.columnBtnText + "</span></a>" );
-		$popup = $( "<div class='dialog-table-coltoggle " + this.classes.popup + "' id='" + id + "'></div>" );
-		$menu = $( "<div class='btn-group'></div>" );
+		popupId = tableId + "-popup";
+
+		$menuButton = $( "<a>", {
+			id: popupId,
+			"class": "btn btn-micro " + this.classes.columnBtn
+		} );
+
+		$menuButton.attr( "data-popup-link", "" );
+
+		$( "<span>" ).text( Tablesaw.i18n.columnBtnText ).appendTo( $menuButton );
+
+		$popup = $( "<div>", {
+			id: popupId,
+			"class": "dialog-table-coltoggle " + this.classes.popup
+		} );
+
+		$menu = $( document.createElement( "div" ) ).addClass( 'btn-group' );
 
 		var hasNonPersistentHeaders = false;
 		$( this.headers ).not( "td" ).each( function() {
@@ -57,10 +70,15 @@
 			if( priority && priority !== "persist" ) {
 				$cells.addClass( self.classes.priorityPrefix + priority );
 
-				$("<label><input type='checkbox' checked>" + $this.text() + "</label>" )
-					.appendTo( $menu )
-					.children( 0 )
-					.data( "tablesaw-header", this );
+				var $label = $( "<label>", {
+					text:  $this.text()
+				} );
+
+				$( "<input>", {
+					type: "checkbox"
+				} ).prop( "checked", true ).prependTo( $label );
+
+				$label.appendTo( $menu ).children( 0 ).data( "tablesaw-header", this );
 
 				hasNonPersistentHeaders = true;
 			}
